@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class HitCircle : MonoBehaviour
 {
-    float radius = 0.5f;
-    float radiusPlus = 1.5f;
+    float radius = 0;
+    float radiusPlus = 3f;
 
     public bool isHit = false;
 
@@ -22,19 +22,21 @@ public class HitCircle : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-    
-        posC = transform.position;
+        // 생성한 캐릭터와 위치 맞추기
+        GameObject enemy;
 
-        if (radius >= 1.5f)
-            radius = 0;
-        else
-           radius += radiusPlus * Time.deltaTime;
+        enemy = GameObject.Find("Enemy");
 
-        Player player = GameObject.Find("Player").GetComponent<Player>();
+        transform.position = enemy.gameObject.transform.position;
 
         // 원 그리기
         int pointNum = 60;
         float angle = 0;
+
+        if (radius > 5)
+            Destroy(gameObject);
+        else
+            radius += radiusPlus * Time.deltaTime;
 
         GetComponent<LineRenderer>().positionCount = pointNum + 1;
 
@@ -47,8 +49,12 @@ public class HitCircle : MonoBehaviour
             angle += 360 / pointNum;
         }
 
-        // 원과 충돌 체크 -> ok
+        // 원과 플레이어 히트박스 충돌 체크 -> ok
         // 죽었으면 체크 안하게if(!player.GetComponent<Player>().isDead)
+
+        posC = transform.position;
+
+        Player player = GameObject.Find("Player").GetComponent<Player>();
 
         if ((player.atkBox_w1 - radius <= posC.x && posC.x <= player.atkBox_w2 + radius)
             && (player.atkBox_h1 <= posC.y && posC.y <= player.atkBox_h2))

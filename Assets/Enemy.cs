@@ -22,15 +22,21 @@ public class Enemy : MonoBehaviour
     public float hitbox_h1 = 0;
     public float hitbox_h2 = 0;
 
+    public GameObject prefabCircle;
+    List<GameObject > circleList = new List<GameObject>();
+
+    float circleTimer = 0;
+    float cooltime = 1f;
     // Start is called before the first frame update
     void Start()
     {
-        
+        GameObject newCircle = Instantiate(prefabCircle);
     }
 
     // Update is called once per frame
     void Update()
     {
+        // 이동 처리
         posX = transform.position;
 
         if (isDamage)
@@ -60,10 +66,24 @@ public class Enemy : MonoBehaviour
 
         transform.position = posX;
         
+        // 히트박스 설정
         hitbox_w1 = posX.x - dmgArea_x;
         hitbox_w2 = posX.x + dmgArea_x;
         hitbox_h1 = posX.y - dmgArea_y;
         hitbox_h2 = posX.y + dmgArea_y;
+
+        // 원 생성
+
+      
+        if (circleTimer > cooltime)
+        {
+            Debug.Log("2초 지났다~");
+            GameObject newCircle = Instantiate(prefabCircle);
+            circleList.Add(newCircle);
+            circleTimer = 0;
+        }
+        else
+            circleTimer += Time.deltaTime;
 
     }
 
