@@ -15,10 +15,10 @@ public class Player : MonoBehaviour
 
     int jumpCnt = 1;
 
-    float dmgArea_x = 1f;
-    float dmgArea_y = 1f;
-    float hitArea_x = 0.6f;
-    float hitArea_y = 0.8f;
+    public float atkArea_x;
+    public float atkArea_y;
+    public float hitArea_x;
+    public float hitArea_y;
 
     public float atkBox_w1 = 0;
     public float atkBox_w2 = 0;
@@ -35,6 +35,9 @@ public class Player : MonoBehaviour
     float dmgCoolTime = 1;
     float dmgTime = 0;
 
+    Vector3 posX;
+
+    public GameObject prefabAtkBox;
     // Start is called before the first frame update
     void Start()
     {
@@ -44,7 +47,7 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Vector3 posX = transform.position;
+        posX = transform.position;
 
         // 점프
         if (Input.GetKeyDown(KeyCode.C))
@@ -95,37 +98,7 @@ public class Player : MonoBehaviour
             GetComponent<SpriteRenderer>().flipX = true;
         }
 
-
-        /*앞 대쉬
-        if (Input.GetKeyDown(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.LeftArrow))
-        {
-            Debug.Log("frontdash!!!");
-            if (GetComponent<SpriteRenderer>().flipX)
-            {
-                posX.x += 100f * Time.deltaTime;
-            }
-            else
-                posX.x -= 100f * Time.deltaTime;
-        }
-
-        //뒤 대쉬
-        if (Input.GetKeyDown(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.RightArrow))
-        {
-            Debug.Log("backdash!!!");
-            if (GetComponent<SpriteRenderer>().flipX)
-            {
-                posX.x -= 100f * Time.deltaTime;
-            }
-            else
-                posX.x += 100f * Time.deltaTime;
-        }*/
-
         transform.position = posX;
-
-        atkBox_w1 = posX.x - dmgArea_x;
-        atkBox_w2 = posX.x + dmgArea_x;
-        atkBox_h1 = posX.y - dmgArea_y;
-        atkBox_h2 = posX.y + dmgArea_y;
 
         hitBox_w1 = posX.x - hitArea_x;
         hitBox_w2 = posX.x + hitArea_x;
@@ -137,6 +110,10 @@ public class Player : MonoBehaviour
         // 공격
         if (Input.GetKeyDown(KeyCode.X))
         {
+            // 데미지 박스 만들기
+            GameObject atkBox = Instantiate(prefabAtkBox);
+            atkBox.transform.SetParent(gameObject.transform);
+
             // 이펙트
             foreach (Transform child in transform)
             {
@@ -144,14 +121,14 @@ public class Player : MonoBehaviour
                   child.GetComponent<ParticleSystem>().Play();
             }
   
-            //적에게 데미지 주기
+           /* //적에게 데미지 주기
             if (enemy != null && !enemy.GetComponent<Enemy>().isDead)
             {
                 if(enemy.gameObject.transform.GetChild(1).GetComponent<HitCircle>().isHit)
                 {
                     enemy.GetComponent<Enemy>().TakeDamage(10f);
                 }
-            }
+            }*/
         }
 
        //타이밍 못 맞추면 데미지 받기

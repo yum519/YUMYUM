@@ -31,6 +31,7 @@ public class Enemy : MonoBehaviour
     void Start()
     {
         GameObject newCircle = Instantiate(prefabCircle);
+        newCircle.transform.SetParent(gameObject.transform);
     }
 
     // Update is called once per frame
@@ -79,7 +80,7 @@ public class Enemy : MonoBehaviour
         {
             Debug.Log("2초 지났다~");
             GameObject newCircle = Instantiate(prefabCircle);
-            circleList.Add(newCircle);
+            newCircle.transform.SetParent(gameObject.transform);
             circleTimer = 0;
         }
         else

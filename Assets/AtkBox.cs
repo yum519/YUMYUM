@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HitBox : MonoBehaviour
+public class AtkBox : MonoBehaviour
 {
     // Start is called before the first frame update
     float x1;
@@ -10,8 +10,39 @@ public class HitBox : MonoBehaviour
     float y1;
     float y2;
 
-    public bool isPlayerHit = false;
+    Vector3 pos;
 
+    float timer= 0;
+    private void Awake()
+    {
+        // 생성한 캐릭터와 위치 맞추기
+
+        /*if (transform.parent.name.Equals("Player"))
+        {
+            Debug*.Log("플레이어!!");
+        }*/
+
+        Player player = GameObject.Find("Player").GetComponent<Player>();
+        transform.position = player.transform.position;
+
+        pos = transform.position;
+
+        if (player.GetComponent<SpriteRenderer>().flipX)
+        {
+            x1 = pos.x + player.transform.GetComponent<Player>().atkArea_x;
+            x2 = x1 + player.transform.GetComponent<Player>().hitArea_x;
+
+        }
+        else
+        {
+            x1 = pos.x - player.transform.GetComponent<Player>().atkArea_x;
+            x2 = x1 - player.transform.GetComponent<Player>().hitArea_x;
+        }
+       
+        y1 = pos.y - player.transform.GetComponent<Player>().hitArea_y;
+        y2 = pos.y + player.transform.GetComponent<Player>().hitArea_y;
+
+    }
     void Start()
     {
         GetComponent<LineRenderer>().positionCount = 5;
@@ -20,22 +51,8 @@ public class HitBox : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
         // 상자 그리기
-        if (transform.parent.name.Equals("Enemy"))
-        {
-            x1 = transform.parent.GetComponent<Enemy>().hitbox_w1;
-            x2 = transform.parent.GetComponent<Enemy>().hitbox_w2;
-            y1 = transform.parent.GetComponent<Enemy>().hitbox_h1;
-            y2 = transform.parent.GetComponent<Enemy>().hitbox_h2;
-        }
-        else if (transform.parent.name.Equals("Player"))
-        {
-            x1 = transform.parent.GetComponent<Player>().hitBox_w1;
-            x2 = transform.parent.GetComponent<Player>().hitBox_w2;
-            y1 = transform.parent.GetComponent<Player>().hitBox_h1;
-            y2 = transform.parent.GetComponent<Player>().hitBox_h2;
-        }
-
         GetComponent<LineRenderer>().SetPosition(0, new Vector3(x1, y1, 0));
         GetComponent<LineRenderer>().SetPosition(1, new Vector3(x1, y2, 0));
         GetComponent<LineRenderer>().SetPosition(2, new Vector3(x2, y2, 0));
@@ -59,6 +76,16 @@ public class HitBox : MonoBehaviour
             }
         }*/
 
+     
+
+        if(timer > 0.5f)
+        {
+            Destroy(gameObject);
+            timer = 0;
+        }
+        else
+        {
+            timer += Time.deltaTime;
+        }
     }
 }
-

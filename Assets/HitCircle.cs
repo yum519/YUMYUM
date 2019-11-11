@@ -10,17 +10,9 @@ public class HitCircle : MonoBehaviour
     public bool isHit = false;
 
     Vector3 posC;
-    Vector3 posP;
 
-   
     // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
+    private void Awake()
     {
         // 생성한 캐릭터와 위치 맞추기
         GameObject enemy;
@@ -29,6 +21,16 @@ public class HitCircle : MonoBehaviour
 
         transform.position = enemy.gameObject.transform.position;
 
+    }
+    void Start()
+    {
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+     
         // 원 그리기
         int pointNum = 60;
         float angle = 0;
